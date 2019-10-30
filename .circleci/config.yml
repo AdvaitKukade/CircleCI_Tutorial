@@ -30,7 +30,7 @@ jobs:
             mysql -h 127.0.0.1 -u user -p passw0rd  --execute="Select * from test_db.Persons"
 workflows:
   version: 2 
-  build-deploy:
+  build_deploy:
     jobs: 
       - build:
             
