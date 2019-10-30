@@ -17,11 +17,11 @@ jobs:
           command: |
             for i in 'seq 1 10';
             do
-              nc -z 127.0.0.1 3306 && echo "Success" && exit 0 
+              nc -z 127.0.0.1 3306 && echo Success && exit 0 
               echo -n 
               sleep 1
             done
-            echo "Failed waiting for MYSQL" && exit 1 
+            echo Failed waiting for MYSQL && exit 1 
       - run: 
           name: Install MYSQL CLI; Import dummy data; run an example query
           command: | 
