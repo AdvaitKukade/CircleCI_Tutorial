@@ -1,4 +1,3 @@
-version: 2 
 jobs:
   build:
     docker:
@@ -28,6 +27,8 @@ jobs:
             sudo apt-get install default-mysql-client
             mysql -h 127.0.0.1 -u user -p passw0rd test_db < sql-data/dummy.sql
             mysql -h 127.0.0.1 -u user -p passw0rd  --execute="Select * from test_db.Persons"
+version: 2 
+
 workflows:
   version: 2 
   build_deploy:
