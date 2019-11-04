@@ -1,35 +1,20 @@
+version: 2 
 jobs:
   build:
     docker:
-      - image: circleci/php:7.1-apache-node-browsers
-      - image: circleci/mysql:8.0.4
-        environment:
-          MYSQL_ROOT_PASSWORD: rootpw
-          MYSQL_DATABASE: test_db
-          MYSQL_USER: user
-          MYSQL_PASSWORD: passw0rd
-     
+      - image: gcc:8.1.0
+    working_directory: ~/work
     steps:
-      - checkout
-      - run: 
-          name: Waiting for MYSQL to be ready 
-          command: |
-            for i in 'seq 1 10';
-            do
-              nc -z 127.0.0.1 3306 && echo Success && exit 0 
-              echo -n 
-              sleep 1
-            done
-            echo Failed waiting for MYSQL && exit 1 
-      - run: 
-          name: Install MYSQL CLI; Import dummy data; run an example query
+      - checkout 
+      - run: make
+      - run: | 
+      # tell the OS to remove the file size limit of core dump 
+        ulimit -c unlimited 
+        ./dump 
+      - run:
           command: | 
-            sudo apt-get install default-mysql-client
-            mysql -h 127.0.0.1 -u user -p passw0rd test_db < sql-data/dummy.sql
-            mysql -h 127.0.0.1 -u user -p passw0rd  --execute="Select * from test_db.Pe
-workflows:
-  version: 2 
-  build_deploy:
-    jobs: 
-      - build
-            
+            mkdir -p /tmp/core_dumps
+            cp core.* /tmp/core_dumps
+          when: on_fail 
+      - store_artifacts:
+          path: /tmp/core_dumps
