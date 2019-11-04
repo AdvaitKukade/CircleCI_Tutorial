@@ -9,8 +9,8 @@ jobs:
       - run: make
       - run: | 
       # tell the OS to remove the file size limit of core dump 
-        ulimit -c unlimited 
-        ./dump 
+          ulimit -c unlimited 
+          ./dump 
       - run:
           command: | 
             mkdir -p /tmp/core_dumps
